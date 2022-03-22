@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <None Remove="Resources\imageBottom.png" />
-    <None Remove="Resources\imageTop.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +17,15 @@
 
   <ItemGroup>
     <Resource Include="Resources\imageBottom.png" />
-    <Resource Include="Resources\imageTop.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\imageTop.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\main.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

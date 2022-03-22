@@ -13,6 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Drawing;
+using System.Windows.Forms;
+using System.IO;
+using System.Reflection;
 
 namespace avatar_movent_v2
 {
@@ -24,6 +28,9 @@ namespace avatar_movent_v2
         public MainWindow()
         {
             InitializeComponent();
+             
+
+            //audio
             var waveIn = new WaveInEvent()
             {
                 DeviceNumber = 0,
@@ -38,6 +45,8 @@ namespace avatar_movent_v2
         {
             float maxValue = 32767/4;
             float ratio = 0f;
+            float easedRatio = 0f;
+            float ratioThreshold = 0.05f;
             int peakValue = 0;
             int bytesPerSample = 2;
             for (int index = 0; index < args.BytesRecorded; index += bytesPerSample)
@@ -45,15 +54,30 @@ namespace avatar_movent_v2
                 int value = BitConverter.ToInt16(args.Buffer, index);
                 peakValue = Math.Max(peakValue, value);
 
-                ratio = peakValue / maxValue;
             }
+
+            ratio = peakValue / maxValue;
+            if (ratio > 1) ratio = 1;
+            if (ratio > ratioThreshold) {
+                easedRatio = ratio <= 0.5 ? ratio : easeOut(ratio);
+            }
+            
 
             Dispatcher.Invoke(() =>
             {
                 //update UI
-                var maxRotation = -50;
-                ImageTop.Angle = maxRotation * ratio;
+                var maxRotation = -40;
+                ImageTop.Angle = maxRotation * easedRatio;
             });
+        }
+
+        private float easeIn(float ratio)
+        {
+            return 2 * ratio * ratio; // + L
+        }
+        private float easeOut(float ratio)
+        {
+            return (2f * ratio * (1f - ratio)) + 0.5f;
         }
     }
 }

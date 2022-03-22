@@ -1,0 +1,8 @@
+features:
+-swap between assets
+-add your own assets
+-customise rotation center
+-can go up and down instead of rotate
+-change blue screen colour
+
+bugs:
